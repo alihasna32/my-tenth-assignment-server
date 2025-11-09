@@ -29,6 +29,7 @@ async function run() {
     await client.connect();
     const db = client.db("freelance-market-place");
     const jobcollection = db.collection("jobs");
+    const acceptedTasksCollection = db.collection("acceptedTask")
 
     app.post("/addJob", async (req, res) => {
       const newjob = req.body;
@@ -77,7 +78,17 @@ async function run() {
         res.send(result)
     })
 
+    app.post("/accept-task", async(req, res) => {
+        const accepted = req.body
+        const result = await acceptedTasksCollection.insertOne(accepted)
+        res.send(result)
+    })
     
+    app.get("/my-accepted-tasks", async(req, res) => {
+        const email = req.query.email;
+        const result = await acceptedTasksCollection.find({userEmail: email}).toArray()
+        res.send(result)
+    })
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
