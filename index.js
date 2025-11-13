@@ -63,7 +63,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/allJobs", async (req, res) => {
+    app.get("/allJobs", verifyFirebaseToken, async (req, res) => {
       const { sort } = req.query;
       let sortOption = {};
 
