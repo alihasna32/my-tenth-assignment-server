@@ -63,7 +63,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/allJobs", verifyFirebaseToken, async (req, res) => {
+    app.get("/allJobs", async (req, res) => {
       const { sort } = req.query;
       let sortOption = {};
 
@@ -74,11 +74,6 @@ async function run() {
       }
 
       const result = await jobcollection.find().sort(sortOption).toArray();
-      res.send(result);
-    });
-
-    app.get("/allLatestJobs", async (req, res) => {
-      const result = await jobcollection.find().sort({ _id: -1 }).toArray();
       res.send(result);
     });
 
